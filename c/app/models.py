@@ -8,7 +8,7 @@ class Manufacturer(models.Model):
     origin_demonym = models.CharField(max_length=100)
 
     def __str__(self):
-        return f"{self.name} from {self.origin}"
+        return f"{self.name}"
 
 class CarSeries(models.Model):
     manufacturer = models.ForeignKey(Manufacturer, on_delete=models.CASCADE, related_name="series")
