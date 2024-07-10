@@ -40,8 +40,11 @@ class CarMake(models.Model):
     ), default="Gas")
     accident_free = models.BooleanField(default=True)
     origin_country = models.CharField(max_length=1000, default="USA")
-    other_data = models.TextField(default="")
+    other_data = models.TextField(default="", blank=True)
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name="cars", default=1)
 
     def __str__(self):
-        return f"{self.series.__str__()} {self.year_manufactured} \n Mileage: {self.mileage} \n Price: {self.price}$"
+        return f"{self.year_manufactured} {self.series.__str__()} ({self.id})"
+    
+    def mileage_to_kilometers(self):
+        return round(self.mileage * 1.60934)
