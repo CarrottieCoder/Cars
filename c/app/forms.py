@@ -6,4 +6,4 @@ class RegisterForm(forms.Form):
         validators.MinLengthValidator(2, "Username must have at least 3 chars"), 
         validators.ProhibitNullCharactersValidator,
         validators.validate_unicode_slug],)
-    password = forms.PasswordInput(validators=[validators.MinLengthValidator(4, "Password must have at least 4 chars")])
+    password = forms.PasswordInput()

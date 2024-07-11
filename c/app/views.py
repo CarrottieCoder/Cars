@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from .models import *
 from django.http import Http404
+from .forms import *
 # Create your views here.
 def index(request):
     distinct_manufacturers = Manufacturer.objects.values_list('name', flat=True).distinct()
@@ -36,4 +37,6 @@ def car(request, pk):
     })
 
 def register(request):
-    return render(request, template_name="registration/register.html")
+    form = RegisterForm()
+    return render(request, template_name="registration/register.html", context=
+    {"form":form})
