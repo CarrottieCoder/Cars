@@ -34,3 +34,4 @@ def car(request, pk):
     return render(request, template_name="car.html", context    ={
         "car": car,
     })
+

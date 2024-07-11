@@ -19,5 +19,6 @@ from django.urls import path, include
 from .views import *
 urlpatterns = [
     path('', index, name="index"),
-    path('cars/<int:pk>', car, name="car")
+    path('cars/<int:pk>', car, name="car"),
+    path("accounts/", include("django.contrib.auth.urls")),
 ]
