@@ -1,5 +1,60 @@
 {% extends 'layout.html' %}
 
 {% block main %}
-<h1>Car</h1>
-{% endblock main %}  
+<div class="container">
+    <div class="row mt-4">
+        <div class="col">
+            <h1 class="text-center">{{ car.year_manufactured }} {{ car.series }}</h1>
+            <hr>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-4">
+            <ul class="list-group">
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    Mileage:
+                    <span class="badge bg-secondary">{{ car.mileage }}</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    Engine:
+                    <span class="badge bg-secondary">{{ car.engine | title }}</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    Class:
+                    <span class="badge bg-secondary">{{ car.series.car_class }}</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    Origin:
+                    <span class="badge bg-secondary">{{ car.origin_country }}</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    {% if car.accident_free %}
+                        Condition:
+                        <span class="badge bg-success">Accident-free</span>
+                    {% else %}
+                        Condition:
+                        <span class="badge bg-danger">Had an accident</span>
+                    {% endif %}
+                </li>
+            </ul>
+        </div>
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="card-title">Price: {{ car.formatted_price }}</h2>
+                    <button type="button" class="btn btn-primary">Buy</button>
+                </div>
+            </div>
+
+            <nav aria-label="breadcrumb" class="mt-4">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="#">All cars</a></li>
+                    <li class="breadcrumb-item"><a href="#">{{ car.series.manufacturer.origin_demonym }} Cars</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">{{ car.year_manufactured }} {{ car.series }}</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+</div>
+{% endblock main %}
