@@ -6,7 +6,7 @@ def index(request):
     distinct_manufacturers = Manufacturer.objects.values_list('name', flat=True).distinct()
     distinct_engines = ['Gas', 'Diesel', 'Hybrid', 'Electric', 'Hydrogen', 'Other']
     print(distinct_engines)
-    # Enable filters
+    # Enable filters 
     if request.GET and "f" in request.GET:
         origin_country = request.GET.get('origin_country')
         accident_free = request.GET.get('accident_free')
