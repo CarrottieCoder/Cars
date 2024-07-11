@@ -1,7 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import *
 from django.http import Http404
 from .forms import *
+from django.contrib.auth import authenticate, login
+
 # Create your views here.
 def index(request):
     distinct_manufacturers = Manufacturer.objects.values_list('name', flat=True).distinct()
@@ -37,6 +39,23 @@ def car(request, pk):
     })
 
 def register(request):
+    if request.POST:
+        form = RegisterForm(request.POST)
+        if not form.is_valid():
+            return render(request, template_name="registration/register.html", context=
+                {
+                    "form":form
+                })
+        else:
+            try:
+                username = form.cleaned_data.get('username')
+                password = form.cleaned_data.get('username')
+                user = User(username=username, password=password)
+                user.save()
+                login(request, user)
+                return redirect('/')
+            except Exception as e:
+                print(e)
     form = RegisterForm()
     return render(request, template_name="registration/register.html", context=
     {"form":form})

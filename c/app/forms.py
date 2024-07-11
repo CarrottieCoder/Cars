@@ -6,4 +6,7 @@ class RegisterForm(forms.Form):
         validators.MinLengthValidator(2, "Username must have at least 3 chars"), 
         validators.ProhibitNullCharactersValidator,
         validators.validate_unicode_slug],)
-    password = forms.PasswordInput()
+    password = forms.CharField(widget=forms.PasswordInput)
+    
+    class Meta:
+        fields = ['username', 'password']

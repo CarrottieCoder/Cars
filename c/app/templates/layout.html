@@ -21,7 +21,7 @@
                 </div>
               </div>
                 {% if request.user.is_authenticated %}
-                    <a class="nav-link active" aria-current="page" href="{% url 'logout' %}?next={{ request.path }}">Logout</a>
+                    <a class="nav-link active" aria-current="page" href="{% url 'logout' %}?next={{ request.path }}">Logout {{ request.user.username }}</a>
                     <input type="hidden" name="next" value="{{ next }}" />
                 {% else %}
                 <!-- TODO: Add a next -->
