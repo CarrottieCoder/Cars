@@ -35,3 +35,5 @@ def car(request, pk):
         "car": car,
     })
 
+def register(request):
+    return render(request, template_name="registration/register.html")

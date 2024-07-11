@@ -20,5 +20,6 @@ from .views import *
 urlpatterns = [
     path('', index, name="index"),
     path('cars/<int:pk>', car, name="car"),
+    path('accounts/register', register, name="register"),
     path("accounts/", include("django.contrib.auth.urls")),
 ]
