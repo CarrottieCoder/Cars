@@ -54,7 +54,7 @@ class CarMake(models.Model):
                 n += " "
             n += x[i]
 
-        return n
+        return n + " $"
 
     def mileage_to_kilometers(self):
         return round(self.mileage * 1.60934)
