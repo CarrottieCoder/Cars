@@ -31,7 +31,7 @@
                     <div class="card-body">
                     <h5 class="card-title">Price: {{ car.formatted_price }}</h5>
                     <p class="card-text"> {{ car.year_manufactured }} | {{ car.mileage }} miles  |  {{car.engine | title}} | {{ car.series.car_class }} </p>
-                    <a href="#" class="btn btn-primary">Details</a>
+                    <a href="{% url 'car' car.id %}" class="btn btn-primary">Details</a>
                     </div>
                 </div>
             {% endfor %}
