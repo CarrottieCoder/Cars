@@ -24,14 +24,14 @@
         <div class="col-6">
             <!-- Content -->
             {% for car in cars %}
-                <div class="card">
+                <div class="card" style="margin-bottom: 2%;">
                     <div class="card-header">
                     <b>{{ car.series }}</b>
                     </div>
                     <div class="card-body">
                     <h5 class="card-title">Price: {{ car.formatted_price }}</h5>
-                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                    <p class="card-text"> {{ car.year_manufactured }} | {{ car.mileage }} miles  |  {{car.engine | title}} | {{ car.series.car_class }} </p>
+                    <a href="#" class="btn btn-primary">Details</a>
                     </div>
                 </div>
             {% endfor %}
