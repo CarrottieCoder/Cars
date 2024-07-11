@@ -1,44 +1,68 @@
 {% extends 'layout.html' %}
 
 {% block main %}
-    <!-- The Main -->
-    <div class="container text-center">
-        <div class="row align-items-start" style="margin: 2%;">
-        <div class="col">
+<div class="container">
+    <!-- Header -->
+    <div class="row mt-4">
+        <div class="col text-center">
             <h2>{{ cars.count }} cars found</h2>
             <hr>
         </div>
     </div>
-    <div class="container text-center">
-        <div class="row align-items-start">
+
+    <div class="row mt-4">
         <!-- Sidebar -->
-        <div class="col-3">
-            <nav class="nav flex-column bg-light">
-                <h2>Settings</h2>
-                <a class="nav-link active" aria-current="page" href="#">Active</a>
-                <a class="nav-link" href="#">Link</a>
-                <a class="nav-link" href="#">Link</a>
-                <a class="nav-link disabled" aria-disabled="true">Disabled</a>
-            </nav>
-        </div>
-        <div class="col-6">
-            <!-- Content -->
-            {% for car in cars %}
-                <div class="card" style="margin-bottom: 2%;">
-                    <div class="card-header">
-                    <b>{{ car.series }}</b>
-                    </div>
-                    <div class="card-body">
-                    <h5 class="card-title">Price: {{ car.formatted_price }}</h5>
-                    <p class="card-text"> {{ car.year_manufactured }} | {{ car.mileage }} miles  |  {{car.engine | title}} | {{ car.series.car_class }} </p>
-                    <a href="{% url 'car' car.id %}" class="btn btn-primary">Details</a>
-                    </div>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Settings</h5>
+                    <form>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="accidentFreeCheckbox">
+                            <label class="form-check-label" for="accidentFreeCheckbox">Accident-free</label>
+                        </div>
+                        <hr>
+                        <h6>Manufacturers</h6>
+                        {% for brand in distinct_manufacturers %}
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="manufacturerCheckbox{{ forloop.counter }}">
+                                <label class="form-check-label" for="manufacturerCheckbox{{ forloop.counter }}">{{ brand }}</label>
+                            </div>
+                        {% endfor %}
+                        <hr>
+                        <h6>Engine</h6>
+                        {% for engine in distinct_engines %}
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="engineCheckbox{{ forloop.counter }}">
+                                <label class="form-check-label" for="engineCheckbox{{ forloop.counter }}">{{ engine }}</label>
+                            </div>
+                        {% endfor %}
+                        <hr>
+                        <button type="submit" class="btn btn-primary">Filter</button>
+                    </form>
                 </div>
-            {% endfor %}
+            </div>
         </div>
         
+        <!-- Content -->
+        <div class="col-md-9">
+            <div class="row">
+                {% for car in cars %}
+                    <div class="col-md-6 mb-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="card-title">{{ car.series }}</h5>
+                            </div>
+                            <div class="card-body">
+                                <p class="card-text">Price: {{ car.formatted_price }}</p>
+                                <p class="card-text">{{ car.year_manufactured }} | {{ car.mileage }} miles | {{ car.engine | title }} | {{ car.series.car_class }}</p>
+                                <a href="{% url 'car' car.id %}" class="btn btn-primary">Details</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
         </div>
     </div>
-    </div>
-
+</div>
 {% endblock main %}
