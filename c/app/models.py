@@ -50,10 +50,9 @@ class CarMake(models.Model):
         x = str(self.price)
         n = ""
         for i in range(len(x)):
-            if i % 3 == 0:
+            if i > 0 and (len(x) - i) % 3 == 0:
                 n += " "
             n += x[i]
-
         return n + " $"
 
     def mileage_to_kilometers(self):
