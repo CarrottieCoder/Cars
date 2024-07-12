@@ -3,6 +3,7 @@ from .models import *
 from django.http import Http404
 from .forms import *
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 def index(request):
@@ -36,6 +37,12 @@ def car(request, pk):
         raise Http404("Car does not exist")
     return render(request, template_name="car.html", context    ={
         "car": car,
+    })
+
+@login_required
+def create(request):
+    return render(request, template_name="create", context={
+        
     })
 
 def register(request):
