@@ -53,7 +53,8 @@
                 <div class="card-body">
                     <h2 class="card-title">Price: {{ car.formatted_price }}</h2>
                     {% if car.owner == request.user %}
-                        <button type="button" class="btn btn-primary">Delete</button>
+                        <a href="{% url 'delete_make' car.id %}"><button type="button" class="btn btn-primary">Delete</button></a>
+                        <a href="{% url 'edit_make' car.id %}"><button type="button" class="btn btn-primary">Edit</button></a>
                     {% else %}
                         <button type="button" class="btn btn-primary">Buy</button>
                     {% endif %}

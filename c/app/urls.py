@@ -22,6 +22,7 @@ urlpatterns = [
     path('cars/<int:pk>', car, name="car"),
     path('create_make', create_make, name="create_make"),
     path('cars/<int:pk>/delete', delete_make, name="delete_make"),
+    path('cars/<int:pk>/edit', edit_make, name="edit_make"),
     path('accounts/register', register, name="register"),
     path("accounts/", include("django.contrib.auth.urls")),
 ]

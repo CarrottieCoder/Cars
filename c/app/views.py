@@ -41,7 +41,7 @@ def car(request, pk):
     })
 
 @login_required
-def delete_car_make(request, pk):
+def delete_make(request, pk):
     try:
         car = CarMake.objects.get(pk=pk)
     except CarMake.DoesNotExist:
@@ -51,7 +51,21 @@ def delete_car_make(request, pk):
         car.delete()
         return redirect('/')
     else:
-        return HttpResponseForbidden
+        return HttpResponseForbidden("That is NOT yours")
+
+@login_required
+def edit_make(request, pk):
+    try:
+        car = CarMake.objects.get(pk=pk)
+    except CarMake.DoesNotExist:
+        return redirect('/')
+    if car.owner == request.user:
+        form = CreateCarMakeForm(car)
+        return render(request, template_name="edit.html", context={
+            "form": form
+        })
+    else: 
+        return HttpResponseForbidden("That is NOT yours")
 
 @login_required
 def create_make(request):
