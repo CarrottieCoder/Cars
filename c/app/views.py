@@ -41,7 +41,7 @@ def car(request, pk):
     })
 
 @login_required
-def delete_car(request, pk):
+def delete_car_make(request, pk):
     try:
         car = CarMake.objects.get(pk=pk)
     except CarMake.DoesNotExist:
