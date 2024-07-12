@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 def index(request):
+    print(request.GET)
     distinct_manufacturers = Manufacturer.objects.values_list('name', flat=True).distinct()
     distinct_engines = ['Gas', 'Diesel', 'Hybrid', 'Electric', 'Hydrogen', 'Other']
     print(distinct_engines)
