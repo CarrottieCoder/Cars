@@ -12,7 +12,7 @@ class RegisterForm(forms.Form):
     class Meta:
         fields = ['username', 'password']
 
-class CreateCarForm(forms.Form):
+class CreateCarMakeForm(forms.Form):
     series = forms.ModelChoiceField(queryset=CarSeries.objects.all(), required=True)
     year_manufactued = forms.IntegerField(validators=[
         validators.MinValueValidator(1900, "That's not a year"),

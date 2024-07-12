@@ -41,8 +41,9 @@ def car(request, pk):
 
 @login_required
 def create(request):
+    form = CreateCarMakeForm()
     return render(request, template_name="create", context={
-        
+        "form": form
     })
 
 def register(request):
