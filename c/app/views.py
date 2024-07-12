@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from .models import *
-from django.http import Http404
+from django.http import Http404, HttpResponseForbidden
 from .forms import *
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
@@ -39,6 +39,19 @@ def car(request, pk):
     return render(request, template_name="car.html", context    ={
         "car": car,
     })
+
+@login_required
+def delete_car(request, pk):
+    try:
+        car = CarMake.objects.get(pk=pk)
+    except CarMake.DoesNotExist:
+        return redirect('/')
+    
+    if car.owner == request.user:
+        car.delete()
+        return redirect('/')
+    else:
+        return HttpResponseForbidden
 
 @login_required
 def create_make(request):
