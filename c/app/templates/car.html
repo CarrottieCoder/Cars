@@ -37,19 +37,33 @@
                         <span class="badge bg-danger">Had an accident</span>
                     {% endif %}
                 </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    {% if car.owner == request.user %}
+                        Owner:
+                        <span class="badge bg-success">You</span>
+                    {% else %}
+                        Owner:
+                        <span class="badge bg-secondary">{{ car.owner.username }}</span>
+                    {% endif %}
+                </li>
             </ul>
         </div>
         <div class="col-md-8">
             <div class="card">
                 <div class="card-body">
                     <h2 class="card-title">Price: {{ car.formatted_price }}</h2>
-                    <button type="button" class="btn btn-primary">Buy</button>
+                    {% if car.owner == request.user %}
+                        <button type="button" class="btn btn-primary">Delete</button>
+                    {% else %}
+                        <button type="button" class="btn btn-primary">Buy</button>
+                    {% endif %}
+                    
                 </div>
             </div>
 
             <nav aria-label="breadcrumb" class="mt-4">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="#">All cars</a></li>
+                    <li class="breadcrumb-item"><a href="{% url 'index' %}">All cars</a></li>
                     <li class="breadcrumb-item"><a href="#">{{ car.series.manufacturer.origin_demonym }} Cars</a></li>
                     <li class="breadcrumb-item active" aria-current="page">{{ car.year_manufactured }} {{ car.series }}</li>
                 </ol>

@@ -35,6 +35,7 @@ def car(request, pk):
         car = CarMake.objects.get(pk=pk)
     except CarMake.DoesNotExist:
         raise Http404("Car does not exist")
+    print(car.owner == request.user)
     return render(request, template_name="car.html", context    ={
         "car": car,
     })
