@@ -30,6 +30,7 @@ def index(request):
         "distinct_engines": distinct_engines,
     })
 
+
 def car(request, pk):
     try: 
         car = CarMake.objects.get(pk=pk)
@@ -60,10 +61,23 @@ def edit_make(request, pk):
     except CarMake.DoesNotExist:
         return redirect('/')
     if car.owner == request.user:
-        form = CreateCarMakeForm(car)
-        return render(request, template_name="edit.html", context={
-            "form": form
-        })
+        if request.method == "POST":
+            form = CarMakeForm(request.POST, instance=car)
+            if form.is_valid():
+                form.save()
+                car.save()
+                return redirect('car', car.id)
+            else:
+               return render(request, template_name="edit.html", context={
+                "form": form,
+                "car": car
+            }) 
+        else:
+            form = CarMakeForm(instance=car)
+            return render(request, template_name="edit.html", context={
+                "form": form,
+                "car": car
+            })
     else: 
         return HttpResponseForbidden("That is NOT yours")
 

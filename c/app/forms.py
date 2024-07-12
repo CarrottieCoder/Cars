@@ -1,6 +1,6 @@
 from django import forms
 from django.core import validators
-from .models import CarSeries
+from .models import CarSeries, CarMake
 
 class RegisterForm(forms.Form):
     username = forms.CharField(validators=[
@@ -37,6 +37,11 @@ class CreateCarMakeForm(forms.Form):
         validators.MinLengthValidator(3)
     ], required=True)
     other_data = forms.CharField(widget=forms.Textarea())
+
+class CarMakeForm(forms.ModelForm):
+    class Meta:
+        model = CarMake
+        fields = ['series', 'year_manufactured', 'mileage', 'price', 'engine', 'accident_free', 'origin_country', 'other_data']
     
 
     
