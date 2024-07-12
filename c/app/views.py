@@ -40,9 +40,32 @@ def car(request, pk):
     })
 
 @login_required
-def create(request):
+def create_make(request):
+    if request.POST:
+        form = CreateCarMakeForm(request.POST)
+        if not form.is_valid():
+            return render(request, template_name="create.html", context={
+                "form": form
+            })
+        else:
+            try:
+                series = form.cleaned_data.get('series')
+                year_manufactured = form.cleaned_data.get('year_manufactured')
+                mileage = form.cleaned_data.get('mileage')
+                price = form.cleaned_data.get('price')
+                engine = form.cleaned_data.get('engine')
+                accident_free = form.cleaned_data.get('accident_free')
+                origin_country = form.cleaned_data.get('origin_country')
+                other_data = form.cleaned_data.get('other_data', "")
+                owner = request.user
+
+                make = CarMake(series=series, year_manufactured=year_manufactured, mileage=mileage, price=price, engine=engine, accident_free=accident_free, origin_country=origin_country, other_data=other_data, owner=owner)
+                make.save()
+                return redirect(f"cars/{make.id}")
+            except Exception as e:
+                print(e)
     form = CreateCarMakeForm()
-    return render(request, template_name="create", context={
+    return render(request, template_name="create.html", context={
         "form": form
     })
 

@@ -14,7 +14,7 @@ class RegisterForm(forms.Form):
 
 class CreateCarMakeForm(forms.Form):
     series = forms.ModelChoiceField(queryset=CarSeries.objects.all(), required=True)
-    year_manufactued = forms.IntegerField(validators=[
+    year_manufactured = forms.IntegerField(validators=[
         validators.MinValueValidator(1900, "That's not a year"),
         validators.MaxValueValidator(2024, "The car can't be newer than 2024")
     ], required=True)
@@ -36,7 +36,7 @@ class CreateCarMakeForm(forms.Form):
     origin_country = forms.CharField(validators=[
         validators.MinLengthValidator(3)
     ], required=True)
-    other_data = forms.Textarea()
+    other_data = forms.CharField(widget=forms.Textarea())
     
 
     

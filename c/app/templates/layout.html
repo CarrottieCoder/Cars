@@ -17,7 +17,7 @@
               <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                 <div class="navbar-nav">
                   <a class="nav-link active" aria-current="page" href="{%url 'index'%}">Home</a>
-                  <a class="nav-link" href="#">Add a car</a>
+                  <a class="nav-link" href="{% url 'create_make' %}">Add a car</a>
                 </div>
               </div>
                 {% if request.user.is_authenticated %}
