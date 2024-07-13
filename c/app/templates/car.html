@@ -71,11 +71,20 @@
 
             <nav aria-label="breadcrumb" class="mt-4">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{% url 'index' %}">All cars</a></li>
-                    <li class="breadcrumb-item"><a href="#">{{ car.series.manufacturer.origin_demonym }} Cars</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">{{ car.year_manufactured }} {{ car.series }}</li>
+                    <li class="breadcrumb-item">
+                        <a href="{% url 'index' %}">All cars</a>
+                    </li>
+                    {% with car.series.manufacturer.origin as origin %}
+                        <li class="breadcrumb-item">
+                            <a href="{% url 'index' %}?manufacturer_origin={{ origin }}">{{ car.series.manufacturer.origin_demonym }} Cars</a>
+                        </li>
+                    {% endwith %}
+                    <li class="breadcrumb-item active" aria-current="page">
+                        {{ car.year_manufactured }} {{ car.series }}
+                    </li>
                 </ol>
             </nav>
+            
         </div>
     </div>
 </div>

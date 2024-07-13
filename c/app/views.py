@@ -23,8 +23,7 @@ def index(request):
     manufacturer_origin = request.GET.getlist('manufacturer_origin')
 
     if not len(request.GET) == 0:
-        if not len(request.GET) == 1 and distance_unit:
-            f = True
+        f = True
 
         if accident_free != None:
             queryset = queryset.filter(accident_free=True)
