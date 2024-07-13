@@ -6,36 +6,39 @@ from .forms import *
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 
-def replace_on(value):
-    return not value == "on"
-
 # Create your views here.
 def index(request):
     distinct_manufacturers = Manufacturer.objects.values_list('name', flat=True).distinct()
     distinct_engines = ['Gas', 'Diesel', 'Hybrid', 'Electric', 'Hydrogen', 'Other']
     # Enable filters 
     queryset = CarMake.objects.all()
+    f = False
+    
+    # Get GET parameters 
+    accident_free = request.GET.get('accident_free')
+    engines = request.GET.getlist('engines')
 
     if not len(request.GET) == 0:
-        accident_free = replace_on(request.GET.get('accident_free'))
-        if accident_free:
-            queryset = queryset.filter(accident_free=accident_free)
-            
+        f = True
 
+        if accident_free != None:
+            queryset = queryset.filter(accident_free=True)
 
-
-        engines = request.GET.getlist('engines')
         if engines:
             engine_filter = Q()
             for engine in engines:
                 engine_filter |= Q(engine=engine)
             queryset = queryset.filter(engine_filter)
     
-
+    print(accident_free)
     return render(request, template_name='index.html', context={
         "cars": queryset,
         "distinct_manufacturers": distinct_manufacturers,
         "distinct_engines": distinct_engines,
+        "f": f,
+        "accident_free": accident_free,
+        "engines": engines
+
 
     })
 

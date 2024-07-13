@@ -18,14 +18,14 @@
                     <h5 class="card-title">Settings</h5>
                     <form method="get" action="{% url 'index' %}">
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="accidentFreeCheckbox" name="accident_free" value="true">
+                            <input class="form-check-input" type="checkbox" id="accidentFreeCheckbox" name="accident_free" value="true" {% if accident_free %}checked{% endif %}>
                             <label class="form-check-label" for="accidentFreeCheckbox">Accident-free</label>
                         </div>
                         <hr>
                         <h6>Manufacturers</h6>
                         {% for brand in distinct_manufacturers %}
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="manufacturerCheckbox{{ forloop.counter }}" name="manufacturers" value="{{ brand }}">
+                                <input class="form-check-input" type="checkbox" id="manufacturerCheckbox{{ forloop.counter }}" name="manufacturers" value="{{ brand }}" {% if brand in manufacturers %}checked{% endif %}>
                                 <label class="form-check-label" for="manufacturerCheckbox{{ forloop.counter }}">{{ brand }}</label>
                             </div>
                         {% endfor %}
@@ -33,13 +33,18 @@
                         <h6>Engine</h6>
                         {% for engine in distinct_engines %}
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="engineCheckbox{{ forloop.counter }}" name="engines" value="{{ engine }}">
+                                <input class="form-check-input" type="checkbox" id="engineCheckbox{{ forloop.counter }}" name="engines" value="{{ engine }}" {% if engine in engines %}checked{% endif %}>
                                 <label class="form-check-label" for="engineCheckbox{{ forloop.counter }}">{{ engine }}</label>
                             </div>
                         {% endfor %}
                         <hr>
                         <button type="submit" class="btn btn-primary">Filter</button>
+                        {% if f %}
+                        <a href="{% url 'index' %}" class="btn btn-secondary">Clear Filters</a>
+
+                        {% endif %}
                     </form>
+                    
                     
                 </div>
             </div>
