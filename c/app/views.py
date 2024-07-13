@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from .models import *
 from django.db.models import Q
-from django.http import Http404, HttpResponseForbidden
+from django.http import Http404, HttpResponseForbidden, HttpResponse
 from .forms import *
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
@@ -9,6 +9,7 @@ from django.contrib.auth.decorators import login_required
 # Create your views here.
 def index(request):
     distinct_manufacturers = Manufacturer.objects.values_list('name', flat=True).distinct()
+    distinct_manufacturer_origin = Manufacturer.objects.values_list('origin', flat=True).distinct()
     distinct_engines = ['Gas', 'Diesel', 'Hybrid', 'Electric', 'Hydrogen', 'Other']
     # Enable filters 
     queryset = CarMake.objects.all()
@@ -17,9 +18,13 @@ def index(request):
     # Get GET parameters 
     accident_free = request.GET.get('accident_free')
     engines = request.GET.getlist('engines')
+    manufacturers = request.GET.getlist('manufacturers')
+    distance_unit = request.GET.get('distance_unit', request.COOKIES.get('distance_unit', "Miles"))
+    manufacturer_origin = request.GET.getlist('manufacturer_origin')
 
     if not len(request.GET) == 0:
-        f = True
+        if not len(request.GET) == 1 and distance_unit:
+            f = True
 
         if accident_free != None:
             queryset = queryset.filter(accident_free=True)
@@ -29,18 +34,43 @@ def index(request):
             for engine in engines:
                 engine_filter |= Q(engine=engine)
             queryset = queryset.filter(engine_filter)
+        
+        if manufacturers:
+            man_filter = Q()
+            for man in manufacturers:
+                man_filter |= Q(series__manufacturer__name=man)
+            queryset = queryset.filter(man_filter)
+        
+        if manufacturer_origin:
+            print('MO: ')
+            print(manufacturer_origin)
+
+            man_o_filter = Q()
+            for man_o in manufacturer_origin:
+                man_o_filter |= Q(series__manufacturer__origin=man_o)
+            queryset = queryset.filter(man_o_filter)
+
+        if distance_unit != "Miles":
+            distance_unit = "Kilometers"
     
     print(accident_free)
-    return render(request, template_name='index.html', context={
+    response = HttpResponse()
+    response =  render(request, template_name='index.html', context={
         "cars": queryset,
         "distinct_manufacturers": distinct_manufacturers,
+        "distinct_manufacturer_origin": distinct_manufacturer_origin,
         "distinct_engines": distinct_engines,
         "f": f,
         "accident_free": accident_free,
-        "engines": engines
-
+        "engines": engines,
+        "manufacturers": manufacturers,
+        "manufacturer_origin": manufacturer_origin,
+        "distance_unit": distance_unit
 
     })
+    # Cookies 
+    response.set_cookie(key='distance_unit', value=distance_unit, max_age=10000)
+    return response
 
 
 def car(request, pk):
@@ -49,8 +79,10 @@ def car(request, pk):
     except CarMake.DoesNotExist:
         raise Http404("Car does not exist")
     print(car.owner == request.user)
+    unit = request.COOKIES.get('distance_unit', "Miles")
     return render(request, template_name="car.html", context    ={
         "car": car,
+        "unit": unit,
     })
 
 @login_required

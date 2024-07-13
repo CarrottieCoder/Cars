@@ -12,10 +12,17 @@
     <div class="row mt-4">
         <div class="col-md-4">
             <ul class="list-group">
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                    Mileage:
-                    <span class="badge bg-secondary">{{ car.mileage }}</span>
-                </li>
+                {% if unit == 'Miles' %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        Mileage:
+                        <span class="badge bg-secondary">{{ car.mileage }} miles</span>
+                    </li>
+                {% else %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        Milage:
+                        <span class="badge bg-secondary">{{ car.mileage_to_kilometers    }} km</span>
+                    </li>
+                {% endif %}
                 <li class="list-group-item d-flex justify-content-between align-items-center">
                     Engine:
                     <span class="badge bg-secondary">{{ car.engine | title }}</span>

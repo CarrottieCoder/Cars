@@ -30,6 +30,14 @@
                             </div>
                         {% endfor %}
                         <hr>
+                        <h6>Manufacturer origin</h6>
+                        {% for man in distinct_manufacturer_origin %}
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="manufacturer_originCheckbox{{ forloop.counter }}" name="manufacturer_origin" value="{{ man }}" {% if man in manufacturer_origin %}checked{% endif %}>
+                                <label class="form-check-label" for="manufacturer_originCheckbox{{ forloop.counter }}">{{ man }}</label>
+                            </div>
+                        {% endfor %}
+                        <hr>
                         <h6>Engine</h6>
                         {% for engine in distinct_engines %}
                             <div class="form-check">
@@ -37,6 +45,17 @@
                                 <label class="form-check-label" for="engineCheckbox{{ forloop.counter }}">{{ engine }}</label>
                             </div>
                         {% endfor %}
+                        <hr>
+                        
+                        <h6>Unit</h6>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" id="milesRadio" name="distance_unit" value="Miles"  {% if distance_unit == "Miles" %}checked{% endif %}>
+                            <label class="form-check-label" for="milesRadio">Miles</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" id="kilometersRadio" name="distance_unit" value="Kilometers" {% if distance_unit == "Kilometers" %}checked{% endif %}>
+                            <label class="form-check-label" for="kilometersRadio">Kilometers</label>
+                        </div>
                         <hr>
                         <button type="submit" class="btn btn-primary">Filter</button>
                         {% if f %}
@@ -61,11 +80,19 @@
                             </div>
                             <div class="card-body">
                                 <p class="card-text">Price: {{ car.formatted_price }}</p>
-                                <p class="card-text">{{ car.year_manufactured }} | {{ car.mileage }} miles | {{ car.engine | title }} | {{ car.series.car_class }}</p>
+                                <p class="card-text">{{ car.year_manufactured }} 
+                                    {% if distance_unit == "Miles" %}
+                                    | {{ car.mileage }} miles 
+                                    {% else %}
+                                    | {{ car.mileage_to_kilometers }} km
+                                    {% endif %} 
+                                    | {{ car.engine | title }} | {{ car.series.car_class }}</p>
                                 <a href="{% url 'car' car.id %}" class="btn btn-primary">Details</a>
                             </div>
                         </div>
                     </div>
+                {% empty %}
+                <h2 class="text-danger">No cars found</h2>
                 {% endfor %}
             </div>
         </div>
