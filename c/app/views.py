@@ -1,34 +1,42 @@
 from django.shortcuts import render, redirect
 from .models import *
+from django.db.models import Q
 from django.http import Http404, HttpResponseForbidden
 from .forms import *
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 
+def replace_on(value):
+    return not value == "on"
+
 # Create your views here.
 def index(request):
-    print(request.GET)
     distinct_manufacturers = Manufacturer.objects.values_list('name', flat=True).distinct()
     distinct_engines = ['Gas', 'Diesel', 'Hybrid', 'Electric', 'Hydrogen', 'Other']
-    print(distinct_engines)
     # Enable filters 
-    if request.GET and "f" in request.GET:
-        origin_country = request.GET.get('origin_country')
-        accident_free = request.GET.get('accident_free')
-        engine = request.GET.get('engine')
-        cars = CarMake.objects.filter(
-            origin_country=origin_country,
-            accident_free=accident_free,
-            engine=engine,
-            )
-        
-    else:
-        cars = CarMake.objects.all()
+    queryset = CarMake.objects.all()
+
+    if not len(request.GET) == 0:
+        accident_free = replace_on(request.GET.get('accident_free'))
+        if accident_free:
+            queryset = queryset.filter(accident_free=accident_free)
+            
+
+
+
+        engines = request.GET.getlist('engines')
+        if engines:
+            engine_filter = Q()
+            for engine in engines:
+                engine_filter |= Q(engine=engine)
+            queryset = queryset.filter(engine_filter)
+    
 
     return render(request, template_name='index.html', context={
-        "cars": cars,
+        "cars": queryset,
         "distinct_manufacturers": distinct_manufacturers,
         "distinct_engines": distinct_engines,
+
     })
 
 

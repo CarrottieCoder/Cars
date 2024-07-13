@@ -31,12 +31,12 @@ class CarMake(models.Model):
     mileage = models.PositiveIntegerField()
     price = models.PositiveIntegerField(validators=[MinValueValidator(0.0)],)
     engine = models.CharField(max_length=1000, choices=(
-        ("GAS", 'Gas'),
-        ("DIESEL", 'Diesel'),
-        ('HYBRID', 'Hybrid'),
-        ('ELECTRIC', 'Electric'),
+        ("Gas", 'Gas'),
+        ("Diesel", 'Diesel'),
+        ('Hybrid', 'Hybrid'),
+        ('Electric', 'Electric'),
         ('Hydrogen', 'Hydrogen'),
-        ('OTHER', 'Other')
+        ('Other', 'Other')
     ), default="Gas")
     accident_free = models.BooleanField(default=True)
     origin_country = models.CharField(max_length=1000, default="USA")
